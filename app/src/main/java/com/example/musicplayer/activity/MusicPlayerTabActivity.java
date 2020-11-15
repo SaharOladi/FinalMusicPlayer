@@ -18,14 +18,11 @@ import com.example.musicplayer.fragment.SingerFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MusicPlayerTabActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
-    PageAdapter mPageAdapter;
+    MusicPageAdapter mMusicPageAdapter;
 
 
 
@@ -49,8 +46,8 @@ public class MusicPlayerTabActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mPageAdapter = new PageAdapter(this);
-        mViewPager.setAdapter(mPageAdapter);
+        mMusicPageAdapter = new MusicPageAdapter(this);
+        mViewPager.setAdapter(mMusicPageAdapter);
 
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator
                 (mTabLayout, mViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -78,9 +75,9 @@ public class MusicPlayerTabActivity extends AppCompatActivity {
 
 
 
-    private class PageAdapter extends FragmentStateAdapter {
+    private class MusicPageAdapter extends FragmentStateAdapter {
 
-        public PageAdapter(@NonNull FragmentActivity fragmentActivity) {
+        public MusicPageAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
         }
 
@@ -112,13 +109,13 @@ public class MusicPlayerTabActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mPageAdapter.notifyDataSetChanged();
+        mMusicPageAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mPageAdapter.notifyDataSetChanged();
+        mMusicPageAdapter.notifyDataSetChanged();
     }
 
 }
