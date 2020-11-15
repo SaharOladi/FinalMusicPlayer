@@ -7,13 +7,26 @@ public class Album {
     private String mAlbumPath;
     private String mAlbumArtist;
     private String mReleaseDate;
+    private int mNumberSong;
 
-    public Album(Long id, String title, String albumPath, String albumArtist, String releaseDate) {
+    public int getNumberSong() {
+        return mNumberSong;
+    }
+
+    public void setNumberSong(int numberSong) {
+        mNumberSong = numberSong;
+    }
+
+    public Album() {
+    }
+
+    public Album(Long id, String title, String albumPath, String albumArtist, String releaseDate, int number) {
         mAlbumId = id;
         mAlbumTitle = title;
         mAlbumPath = albumPath;
         mAlbumArtist = albumArtist;
         mReleaseDate = releaseDate;
+        mNumberSong = number;
     }
 
     public Long getAlbumId() {
