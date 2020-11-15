@@ -1,6 +1,6 @@
 package com.example.musicplayer.model;
 
-public class Song {
+public class Song implements Comparable{
 
     private Long mSongId;
     private String mSongTitle;
@@ -89,5 +89,10 @@ public class Song {
 
     public void setSongDuration(int songDuration) {
         this.songDuration = songDuration;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

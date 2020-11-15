@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 
 import com.example.musicplayer.model.Album;
+import com.example.musicplayer.model.Singer;
 import com.example.musicplayer.model.Song;
 
 import android.database.CursorWrapper;
@@ -50,5 +51,19 @@ public class MusicCursorWrapper extends CursorWrapper {
         song.setFullPath(FilePath);
 
         return song;
+    }
+
+    public Singer getArtist() {
+
+        Long id = getLong(getColumnIndex(MediaStore.Audio.Artists._ID));
+        String name = getString(getColumnIndex(MediaStore.Audio.Artists.ARTIST));
+        int numberOfSongs = getInt(getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS));
+
+        Singer singer = new Singer();
+        singer.setSingerId(id);
+        singer.setSingerName(name);
+        singer.setTrackNumber(numberOfSongs);
+
+        return singer;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.musicplayer.model;
 
-public class Album {
+public class Album implements Comparable{
 
     private Long  mAlbumId;
     private String mAlbumTitle;
@@ -67,5 +67,10 @@ public class Album {
 
     public void setReleaseDate(String releaseDate) {
         mReleaseDate = releaseDate;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }
