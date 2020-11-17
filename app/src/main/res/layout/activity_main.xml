@@ -10,7 +10,8 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5A66AA"
+        android:background="#FB8C00"
+        app:tabSelectedTextColor="#000E0D"
         app:tabGravity="fill"
         app:tabMode="fixed">
 

@@ -25,11 +25,6 @@ public class SongRepository {
     }
 
     public List<Song> getSongs() {
-        Collections.sort(mSongs);
-        return mSongs;
-    }
-
-    private void findSong() {
         MusicCursorWrapper cursor = new MusicCursorWrapper(mContext.getContentResolver()
                 .query(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         null, null, null, null));
@@ -43,5 +38,8 @@ public class SongRepository {
                 cursor.close();
             }
         }
+        Collections.sort(mSongs);
+        return mSongs;
     }
+
 }

@@ -27,11 +27,7 @@ public class SingerRepository {
     }
 
     public List<Singer> getSingers() {
-        Collections.sort(mSingers);
-        return mSingers;
-    }
 
-    private void findSinger() {
         MusicCursorWrapper cursor = new MusicCursorWrapper(mContext.getContentResolver()
                 .query(MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
                         null, null, null, null));
@@ -45,5 +41,8 @@ public class SingerRepository {
                 cursor.close();
             }
         }
+        Collections.sort(mSingers);
+        return mSingers;
     }
+
 }

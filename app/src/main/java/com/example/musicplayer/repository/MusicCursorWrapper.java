@@ -8,8 +8,11 @@ import com.example.musicplayer.model.Singer;
 import com.example.musicplayer.model.Song;
 
 import android.database.CursorWrapper;
+import android.util.Log;
 
 public class MusicCursorWrapper extends CursorWrapper {
+
+    public static final String TAG = "MusicCursorWrapper";
 
     public MusicCursorWrapper(Cursor cursor) {
         super(cursor);
@@ -29,6 +32,8 @@ public class MusicCursorWrapper extends CursorWrapper {
         album.setAlbumTitle(title);
         album.setAlbumArtist(artist);
         album.setNumberSong(number);
+
+        Log.d(TAG, "getAlbums: ");
 
         return album;
     }
