@@ -2,8 +2,8 @@ package com.example.musicplayer.model;
 
 public class Singer implements Comparable{
 
-    private String mSingerName;
     private Long mSingerId;
+    private String mSingerName;
     private int mTrackNumber;
 
     public int getTrackNumber() {

@@ -1,13 +1,15 @@
 package com.example.musicplayer.model;
 
-public class Album implements Comparable{
+import java.io.Serializable;
+
+public class Album implements Comparable, Serializable {
 
     private Long  mAlbumId;
     private String mAlbumTitle;
-    private String mAlbumPath;
     private String mAlbumArtist;
     private String mReleaseDate;
     private int mNumberSong;
+    private String mAlbumPath;
 
     public int getNumberSong() {
         return mNumberSong;

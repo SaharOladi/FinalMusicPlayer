@@ -34,7 +34,6 @@ public class SingerFragment extends Fragment {
     private SingerAdapter mSingerAdapter;
 
     private SingerRepository mRepository;
-    private Singer mSinger = new Singer();
 
     public SingerFragment() {
         // Required empty public constructor
@@ -52,8 +51,8 @@ public class SingerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
         mRepository = SingerRepository.getInstance(getActivity());
+
 
     }
 
@@ -125,7 +124,7 @@ public class SingerFragment extends Fragment {
 
     }
 
-    private class SingerAdapter extends RecyclerView.Adapter<SingerHolder>  {
+    private class SingerAdapter extends RecyclerView.Adapter<SingerHolder> {
 
         private List<Singer> mSingers;
         private List<Singer> mSearchSingers;
@@ -174,18 +173,12 @@ public class SingerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
-
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        updateUI();
-
     }
-
 
 
 }

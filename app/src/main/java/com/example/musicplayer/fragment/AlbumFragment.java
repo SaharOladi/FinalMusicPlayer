@@ -1,36 +1,23 @@
 package com.example.musicplayer.fragment;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.app.ShareCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.model.Album;
 import com.example.musicplayer.repository.AlbumRepository;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -40,7 +27,6 @@ public class AlbumFragment extends Fragment {
     private AlbumAdapter mAlbumAdapter;
 
     private AlbumRepository mRepository;
-    private Album mAlbum = new Album();
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -58,7 +44,6 @@ public class AlbumFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
         mRepository = AlbumRepository.getInstance(getActivity());
 
     }
@@ -69,8 +54,8 @@ public class AlbumFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_album, container, false);
         findViews(view);
-        initViews();
 
+        initViews();
         return view;
     }
 
@@ -85,7 +70,6 @@ public class AlbumFragment extends Fragment {
 
     public void updateUI() {
         List<Album> albums = mRepository.getAlbums();
-
         if (mAlbumAdapter == null) {
             mAlbumAdapter = new AlbumAdapter(albums);
             mRecyclerView.setAdapter(mAlbumAdapter);
@@ -180,16 +164,11 @@ public class AlbumFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
-
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        updateUI();
-
     }
 
 

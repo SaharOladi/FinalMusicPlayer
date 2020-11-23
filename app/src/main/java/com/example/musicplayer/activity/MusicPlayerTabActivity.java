@@ -112,13 +112,13 @@ public class MusicPlayerTabActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mMusicPageAdapter.notifyDataSetChanged();
+//        mMusicPageAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mMusicPageAdapter.notifyDataSetChanged();
+//        mMusicPageAdapter.notifyDataSetChanged();
     }
 
 }

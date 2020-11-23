@@ -27,6 +27,13 @@ public class Song implements Comparable{
         this.songDuration = songDuration;
     }
 
+    public Song(String songTitle, String albumTitle, String artistName, String fullPath) {
+        mSongTitle = songTitle;
+        mAlbumTitle = albumTitle;
+        mArtistName = artistName;
+        this.fullPath = fullPath;
+    }
+
     public Long getSongId() {
         return mSongId;
     }
