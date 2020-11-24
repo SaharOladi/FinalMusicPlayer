@@ -5,6 +5,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.example.musicplayer.model.Album;
+import com.example.musicplayer.model.Song;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ public class AlbumRepository {
     public static final String TAG = "AlbumRepository";
     private static AlbumRepository sInstance;
     private List<Album> mAlbums = new ArrayList<>();
+    private List<Song> mSongs = new ArrayList<>();
     private Context mContext;
 
     public AlbumRepository(Context context) {
@@ -45,6 +47,28 @@ public class AlbumRepository {
 
         Collections.sort(mAlbums);
         return mAlbums;
+    }
+
+    public List<Song> getSongs(Long albumId){
+
+        String selection = MediaStore.Audio.Albums.ALBUM_ID+ "=?";
+        String[] selectionArgs = new String[] {"" + albumId};
+
+        MusicCursorWrapper cursor = new MusicCursorWrapper(mContext.getContentResolver()
+                .query(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                        null, selection, selectionArgs, null));
+        if (cursor != null && cursor.moveToFirst()) {
+            try {
+                do {
+                    mSongs.add(cursor.getSong());
+                    cursor.moveToNext();
+                } while (!cursor.isAfterLast());
+            } finally {
+                cursor.close();
+            }
+        }
+        Collections.sort(mSongs);
+        return mSongs;
     }
 
 

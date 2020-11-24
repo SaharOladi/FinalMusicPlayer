@@ -60,7 +60,7 @@ public class SingerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_singer, container, false);
+        View view = inflater.inflate(R.layout.fragment_layout, container, false);
         findViews(view);
         initViews();
 
@@ -68,7 +68,7 @@ public class SingerFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_view_singer);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
     }
 
     private void initViews() {

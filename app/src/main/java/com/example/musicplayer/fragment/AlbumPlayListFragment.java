@@ -1,6 +1,5 @@
 package com.example.musicplayer.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,30 +13,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.musicplayer.R;
-import com.example.musicplayer.activity.AlbumPlayListActivity;
 import com.example.musicplayer.model.Album;
+import com.example.musicplayer.model.Song;
 import com.example.musicplayer.repository.AlbumRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
+public class AlbumPlayListFragment extends Fragment {
 
-public class AlbumFragment extends Fragment {
-
-    public static final int REQUEST_CODE_ALBUM_FRAGMENT = 1;
-    public static final String TAG_ALBUM_PLAY_LIST = "TAG_ALBUM_PLAY_LIST";
+    public static final String ARGS_ALBUM_FRAGMENT = "ARGS_ALBUM";
     private RecyclerView mRecyclerView;
-    private AlbumAdapter mAlbumAdapter;
+    private AlbumPlayListAdapter mAlbumAdapter;
 
-    private AlbumRepository mRepository;
+    private long albumId;
+    private List<Song> mSongList;
 
-    public AlbumFragment() {
+    public AlbumPlayListFragment() {
         // Required empty public constructor
     }
 
 
-    public static AlbumFragment newInstance() {
-        AlbumFragment fragment = new AlbumFragment();
+    public static AlbumPlayListFragment newInstance(long albumId) {
+        AlbumPlayListFragment fragment = new AlbumPlayListFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARGS_ALBUM_FRAGMENT, albumId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,15 +46,15 @@ public class AlbumFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRepository = AlbumRepository.getInstance(getActivity());
-
+        albumId = (long) getArguments().getSerializable(ARGS_ALBUM_FRAGMENT);
+        mSongList = AlbumRepository.getInstance(getActivity()).getSongs(albumId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_album_playlist, container, false);
         findViews(view);
 
         initViews();
@@ -62,7 +62,7 @@ public class AlbumFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView = view.findViewById(R.id.recycler_view_album_playlist);
     }
 
     private void initViews() {
@@ -71,22 +71,21 @@ public class AlbumFragment extends Fragment {
     }
 
     public void updateUI() {
-        List<Album> albums = mRepository.getAlbums();
         if (mAlbumAdapter == null) {
-            mAlbumAdapter = new AlbumAdapter(albums);
+            mAlbumAdapter = new AlbumPlayListAdapter(mSongList);
             mRecyclerView.setAdapter(mAlbumAdapter);
         } else {
-            mAlbumAdapter.setAlbums(albums);
+            mAlbumAdapter.setSongs(mSongList);
             mAlbumAdapter.notifyDataSetChanged();
         }
     }
 
-    private class AlbumHolder extends RecyclerView.ViewHolder {
+    private class AlbumPlayListHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle;
-        private long mAlbumId;
+        private Song mSong;
 
-        public AlbumHolder(@NonNull View itemView) {
+        public AlbumPlayListHolder(@NonNull View itemView) {
             super(itemView);
 
             findHolderViews(itemView);
@@ -101,9 +100,6 @@ public class AlbumFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    Intent albumPlayListActivity = AlbumPlayListActivity.newIntent(getActivity(),
-                            mAlbumId);
-                    startActivity(albumPlayListActivity);
                 }
             });
 
@@ -113,64 +109,52 @@ public class AlbumFragment extends Fragment {
             mTitle = itemView.findViewById(R.id.name);
         }
 
-        private void bindAlbums(Album album) {
-            mAlbumId = album.getAlbumId();
-            mTitle.setText(album.getAlbumTitle());
+        private void bindSongs(Song song) {
+            mSong = song;
+            mTitle.setText(song.getSongTitle());
         }
 
     }
 
-    private class AlbumAdapter extends RecyclerView.Adapter<AlbumHolder> {
+    private class AlbumPlayListAdapter extends RecyclerView.Adapter<AlbumPlayListHolder> {
 
-        private List<Album> mAlbums;
+        private List<Song> mSongs;
 
 
-        public List<Album> getAlbums() {
-            return mAlbums;
+        public List<Song> getSongs() {
+            return mSongs;
         }
 
-        public void setAlbums(List<Album> albums) {
-            this.mAlbums = albums;
+        public void setSongs(List<Song> songs) {
+            this.mSongs = songs;
             notifyDataSetChanged();
         }
 
-        public AlbumAdapter(List<Album> albums) {
-            mAlbums = albums;
+        public AlbumPlayListAdapter(List<Song> songs) {
+            mSongs = songs;
         }
 
         @NonNull
         @Override
-        public AlbumHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public AlbumPlayListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getActivity())
                     .inflate(R.layout.row_item, parent, false);
 
-            AlbumHolder albumHolder = new AlbumHolder(view);
+            AlbumPlayListHolder albumHolder = new AlbumPlayListHolder(view);
             return albumHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull AlbumHolder holder, int position) {
-            Album album = mAlbums.get(position);
-            holder.bindAlbums(album);
+        public void onBindViewHolder(@NonNull AlbumPlayListHolder holder, int position) {
+            Song song = mSongs.get(position);
+            holder.bindSongs(song);
         }
 
         @Override
         public int getItemCount() {
-            return mAlbums.size();
+            return mSongs.size();
         }
 
 
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-
 }

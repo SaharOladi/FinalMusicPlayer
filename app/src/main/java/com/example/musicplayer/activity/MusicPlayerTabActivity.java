@@ -15,12 +15,8 @@ import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.AlbumFragment;
 import com.example.musicplayer.fragment.PlayListFragment;
 import com.example.musicplayer.fragment.SingerFragment;
-import com.example.musicplayer.model.Album;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MusicPlayerTabActivity extends AppCompatActivity {
 
@@ -38,7 +34,7 @@ public class MusicPlayerTabActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_music_player_tab);
         findViews();
         initView();
     }

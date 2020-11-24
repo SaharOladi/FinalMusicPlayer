@@ -1,6 +1,5 @@
 package com.example.musicplayer.fragment;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,7 +52,7 @@ public class PlayListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_play_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_layout, container, false);
         findViews(view);
         initViews();
 
@@ -61,7 +60,7 @@ public class PlayListFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_view_song);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
     }
 
     private void initViews() {
