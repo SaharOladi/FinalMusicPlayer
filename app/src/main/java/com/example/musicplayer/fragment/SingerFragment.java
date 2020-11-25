@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.AlbumPlayListActivity;
 import com.example.musicplayer.activity.SingerPlayListActivity;
+import com.example.musicplayer.adpter.SingerAdapter;
 import com.example.musicplayer.model.Singer;
 import com.example.musicplayer.repository.SingerRepository;
 
@@ -83,7 +84,7 @@ public class SingerFragment extends Fragment {
         List<Singer> singers = mRepository.getSingers();
 
         if (mSingerAdapter == null) {
-            mSingerAdapter = new SingerAdapter(singers);
+            mSingerAdapter = new SingerAdapter(getActivity(), singers);
             mRecyclerView.setAdapter(mSingerAdapter);
         } else {
             mSingerAdapter.setSingers(singers);
@@ -91,94 +92,6 @@ public class SingerFragment extends Fragment {
         }
     }
 
-    private class SingerHolder extends RecyclerView.ViewHolder {
-
-        private TextView mTitle;
-        private long mSingerId;
-
-        public SingerHolder(@NonNull View itemView) {
-            super(itemView);
-
-            findHolderViews(itemView);
-
-            setListeners();
-
-        }
-
-        private void setListeners() {
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent singerPlayListActivity = SingerPlayListActivity.newIntent(getActivity(),
-                            mSingerId);
-                    startActivity(singerPlayListActivity);
-                }
-            });
-
-        }
-
-        private void findHolderViews(@NonNull View itemView) {
-            mTitle = itemView.findViewById(R.id.name);
-        }
-
-        private void bindSingers(Singer singer) {
-            mSingerId = singer.getSingerId();
-            mTitle.setText(singer.getSingerName());
-        }
-
-    }
-
-    private class SingerAdapter extends RecyclerView.Adapter<SingerHolder> {
-
-        private List<Singer> mSingers;
-
-
-        public List<Singer> getSingers() {
-            return mSingers;
-        }
-
-        public void setSingers(List<Singer> singers) {
-            this.mSingers = singers;
-        }
-
-        public SingerAdapter(List<Singer> singers) {
-            mSingers = singers;
-        }
-
-        @NonNull
-        @Override
-        public SingerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getActivity())
-                    .inflate(R.layout.row_item, parent, false);
-
-            SingerHolder singerHolder = new SingerHolder(view);
-            return singerHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull SingerHolder holder, int position) {
-            Singer singer = mSingers.get(position);
-            holder.bindSingers(singer);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mSingers.size();
-        }
-
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 
 
 }

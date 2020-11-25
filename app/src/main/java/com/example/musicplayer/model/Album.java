@@ -10,6 +10,7 @@ public class Album implements Comparable, Serializable {
     private String mReleaseDate;
     private int mNumberSong;
     private String mAlbumPath;
+    
 
     public int getNumberSong() {
         return mNumberSong;

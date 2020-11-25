@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.AlbumPlayListActivity;
+import com.example.musicplayer.adpter.AlbumAdapter;
 import com.example.musicplayer.model.Album;
 import com.example.musicplayer.repository.AlbumRepository;
 
@@ -25,6 +26,7 @@ public class AlbumFragment extends Fragment {
 
     public static final int REQUEST_CODE_ALBUM_FRAGMENT = 1;
     public static final String TAG_ALBUM_PLAY_LIST = "TAG_ALBUM_PLAY_LIST";
+
     private RecyclerView mRecyclerView;
     private AlbumAdapter mAlbumAdapter;
 
@@ -73,7 +75,7 @@ public class AlbumFragment extends Fragment {
     public void updateUI() {
         List<Album> albums = mRepository.getAlbums();
         if (mAlbumAdapter == null) {
-            mAlbumAdapter = new AlbumAdapter(albums);
+            mAlbumAdapter = new AlbumAdapter(getActivity(), albums);
             mRecyclerView.setAdapter(mAlbumAdapter);
         } else {
             mAlbumAdapter.setAlbums(albums);
@@ -81,96 +83,4 @@ public class AlbumFragment extends Fragment {
         }
     }
 
-    private class AlbumHolder extends RecyclerView.ViewHolder {
-
-        private TextView mTitle;
-        private long mAlbumId;
-
-        public AlbumHolder(@NonNull View itemView) {
-            super(itemView);
-
-            findHolderViews(itemView);
-
-            setListeners();
-
-        }
-
-        private void setListeners() {
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent albumPlayListActivity = AlbumPlayListActivity.newIntent(getActivity(),
-                            mAlbumId);
-                    startActivity(albumPlayListActivity);
-                }
-            });
-
-        }
-
-        private void findHolderViews(@NonNull View itemView) {
-            mTitle = itemView.findViewById(R.id.name);
-        }
-
-        private void bindAlbums(Album album) {
-            mAlbumId = album.getAlbumId();
-            mTitle.setText(album.getAlbumTitle());
-        }
-
     }
-
-    private class AlbumAdapter extends RecyclerView.Adapter<AlbumHolder> {
-
-        private List<Album> mAlbums;
-
-
-        public List<Album> getAlbums() {
-            return mAlbums;
-        }
-
-        public void setAlbums(List<Album> albums) {
-            this.mAlbums = albums;
-            notifyDataSetChanged();
-        }
-
-        public AlbumAdapter(List<Album> albums) {
-            mAlbums = albums;
-        }
-
-        @NonNull
-        @Override
-        public AlbumHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getActivity())
-                    .inflate(R.layout.row_item, parent, false);
-
-            AlbumHolder albumHolder = new AlbumHolder(view);
-            return albumHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull AlbumHolder holder, int position) {
-            Album album = mAlbums.get(position);
-            holder.bindAlbums(album);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mAlbums.size();
-        }
-
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-
-}

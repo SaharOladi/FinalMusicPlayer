@@ -10,7 +10,6 @@ public class Song implements Comparable{
     public  String artistName;
     public  int duration;
 
-
     public Song(long id, String title, long albumId,
                 String albumName, long artistId, String artistName,
                 int duration, int trackNumber) {
@@ -92,7 +91,6 @@ public class Song implements Comparable{
 
     public Song() {
     }
-
 
     @Override
     public int compareTo(Object o) {
