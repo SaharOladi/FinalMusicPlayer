@@ -43,4 +43,26 @@ public class MediaPlayerActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //TODO: ask how can i have callback here? because it refer null object.
+        mCallBack.onStopPlaying();
+    }
+
+
+    public interface CallBack{
+        void onStopPlaying();
+    }
+
+    private CallBack mCallBack;
+
+    public CallBack getCallBack() {
+        return mCallBack;
+    }
+
+    public void setCallBack(CallBack callBack) {
+        mCallBack = callBack;
+    }
 }

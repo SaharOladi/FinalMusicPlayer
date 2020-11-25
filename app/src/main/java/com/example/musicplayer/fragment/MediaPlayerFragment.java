@@ -14,15 +14,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 
 import com.example.musicplayer.R;
+import com.example.musicplayer.activity.MediaPlayerActivity;
+import com.example.musicplayer.model.Song;
+import com.example.musicplayer.repository.SongRepository;
 
-public class MediaPlayerFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class MediaPlayerFragment extends Fragment implements MediaPlayerActivity.CallBack {
 
 
     public static final String ARGS_MEDIA_PLAYER_SONG_ID = "ARGS_MEDIA_PLAYER_SONG_ID";
-    private ImageView mPlay, mPause, mForward, mBackward;
+    private ImageView mPlay, mPause, mForward, mBackward, mSongBitmap;
+    private TextView mSongTitle;
     private SeekBar mSeekBar;
 
     private MediaPlayer mMediaPlayer;
@@ -30,8 +39,12 @@ public class MediaPlayerFragment extends Fragment {
     private int mSeekBackwardTime;
 
     private long mSongId;
+
     private boolean isPaused = false;
     private boolean isPlayed = true;
+
+    private SongRepository mRepository;
+    private List<Song> mSongList = new ArrayList<>();
 
     private Handler mHandler = new Handler();
 
@@ -52,7 +65,19 @@ public class MediaPlayerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mSongId = (long) getArguments().getSerializable(ARGS_MEDIA_PLAYER_SONG_ID);
+        mRepository = SongRepository.getInstance(getActivity());
+        mSongList = mRepository.getSongs();
+
     }
+
+    private int findCurrentSongPosition(long songId) {
+        for (int i = 0; i < mSongList.size(); i++) {
+            if (mSongList.get(i).getId() == songId)
+                return i;
+        }
+        return 0;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +89,7 @@ public class MediaPlayerFragment extends Fragment {
         initMediaPlayer();
 
         setListener();
+
         return view;
     }
 
@@ -72,8 +98,10 @@ public class MediaPlayerFragment extends Fragment {
         mPause = view.findViewById(R.id.btn_pause);
         mForward = view.findViewById(R.id.btn_forward);
         mBackward = view.findViewById(R.id.btn_backward);
+        mSongTitle = view.findViewById(R.id.song_title);
+        //TODO: extract the image of song if there is any.
+        mSongBitmap = view.findViewById(R.id.song_image);
         mSeekBar = view.findViewById(R.id.seekBar);
-
     }
 
 
@@ -82,12 +110,19 @@ public class MediaPlayerFragment extends Fragment {
     }
 
     private void initMediaPlayer() {
+
         mMediaPlayer = MediaPlayer.create(getActivity(), getSongUri(mSongId));
+
+        if (!mSongList.get(findCurrentSongPosition(mSongId)).title.equals(""))
+            mSongTitle.setText(mSongList.get(findCurrentSongPosition(mSongId)).title + "");
+
 
         mSeekForwardTime = 5 * 1000;
         mSeekBackwardTime = 5 * 1000;
 
-        mSeekBar.setMax(mMediaPlayer.getDuration());
+        if (mMediaPlayer != null)
+            mSeekBar.setMax(mMediaPlayer.getDuration());
+
     }
 
 
@@ -96,13 +131,13 @@ public class MediaPlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mMediaPlayer.start();
-                mHandler.postDelayed(mRunnable,0);
+                mHandler.postDelayed(mRunnable, 0);
                 isPaused = false;
                 isPlayed = true;
 
                 if (!isPaused)
                     mPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
-                if(isPlayed)
+                if (isPlayed)
                     mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
 
             }
@@ -114,7 +149,7 @@ public class MediaPlayerFragment extends Fragment {
                 mMediaPlayer.pause();
 
                 isPlayed = false;
-                if(!isPlayed)
+                if (!isPlayed)
                     mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
 
                 if (!isPaused)
@@ -127,8 +162,8 @@ public class MediaPlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int currentPosition = mMediaPlayer.getCurrentPosition();
-                if (currentPosition + mSeekBackwardTime <= mMediaPlayer.getDuration()) {
-                    mMediaPlayer.seekTo(currentPosition + mSeekBackwardTime);
+                if (currentPosition + mSeekForwardTime <= mMediaPlayer.getDuration()) {
+                    mMediaPlayer.seekTo(currentPosition + mSeekForwardTime);
                 } else {
                     mMediaPlayer.seekTo(mMediaPlayer.getDuration());
                 }
@@ -151,7 +186,7 @@ public class MediaPlayerFragment extends Fragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(seekBar != null && fromUser){
+                if (seekBar != null && fromUser) {
                     mMediaPlayer.seekTo(progress);
                 }
             }
@@ -166,7 +201,17 @@ public class MediaPlayerFragment extends Fragment {
 
             }
         });
+
+        //TODO: auttomtically play next song
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+
+            }
+        });
+
     }
+
 
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -180,5 +225,16 @@ public class MediaPlayerFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mHandler.removeCallbacks(mRunnable);
+    }
+
+    @Override
+    public void onStopPlaying() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.reset();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+            mHandler.removeCallbacks(mRunnable);
+        }
     }
 }
