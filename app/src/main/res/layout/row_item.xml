@@ -9,28 +9,64 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/item_card_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="75dp"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
-        app:cardBackgroundColor="#C9F3F8"
+        app:cardBackgroundColor="#EDFB8C00"
         app:cardCornerRadius="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp"
-            android:textColor="#020202"
-            android:textSize="14sp"
-            tools:text="This is For testing" />
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <ImageView
+                android:id="@+id/image_view_row_item"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                app:srcCompat="@mipmap/ic_defaul_music" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="4dp"
+                    android:text="Unknown"
+                    android:textColor="#020202"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/singer"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="4dp"
+                    android:text="Unknown"
+                    android:textColor="#020202"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 
     </androidx.cardview.widget.CardView>

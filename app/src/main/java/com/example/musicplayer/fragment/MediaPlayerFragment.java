@@ -30,6 +30,9 @@ public class MediaPlayerFragment extends Fragment implements MediaPlayerActivity
 
 
     public static final String ARGS_MEDIA_PLAYER_SONG_ID = "ARGS_MEDIA_PLAYER_SONG_ID";
+
+    // TODO: create service, permission from user to access and part that has mostly repeated song and ...
+    //TODO: add a layout above of list, that have 2 part, one part is playAll and other is Shuffle
     private ImageView mPlay, mPause, mForward, mBackward, mSongBitmap;
     private TextView mSongTitle;
     private SeekBar mSeekBar;
@@ -113,9 +116,8 @@ public class MediaPlayerFragment extends Fragment implements MediaPlayerActivity
 
         mMediaPlayer = MediaPlayer.create(getActivity(), getSongUri(mSongId));
 
-        if (!mSongList.get(findCurrentSongPosition(mSongId)).title.equals(""))
-            mSongTitle.setText(mSongList.get(findCurrentSongPosition(mSongId)).title + "");
-
+        if (!mSongList.get(findCurrentSongPosition(mSongId)).title.equals(null))
+            mSongTitle.setText(mSongList.get(findCurrentSongPosition(mSongId)).getTitle() + "");
 
         mSeekForwardTime = 5 * 1000;
         mSeekBackwardTime = 5 * 1000;
@@ -143,6 +145,7 @@ public class MediaPlayerFragment extends Fragment implements MediaPlayerActivity
             }
         });
 
+        //TODO: edit UI, we need just one button for play and pause.
         mPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
