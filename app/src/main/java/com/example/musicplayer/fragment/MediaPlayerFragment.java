@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,10 @@ public class MediaPlayerFragment extends Fragment {
     private int mSeekBackwardTime;
 
     private long mSongId;
+    private boolean isPaused = false;
+    private boolean isPlayed = true;
+
+    private Handler mHandler = new Handler();
 
     public MediaPlayerFragment() {
         // Required empty public constructor
@@ -81,13 +86,25 @@ public class MediaPlayerFragment extends Fragment {
 
         mSeekForwardTime = 5 * 1000;
         mSeekBackwardTime = 5 * 1000;
+
+        mSeekBar.setMax(mMediaPlayer.getDuration());
     }
+
 
     private void setListener() {
         mPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mMediaPlayer.start();
+                mHandler.postDelayed(mRunnable,0);
+                isPaused = false;
+                isPlayed = true;
+
+                if (!isPaused)
+                    mPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
+                if(isPlayed)
+                    mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
+
             }
         });
 
@@ -95,6 +112,14 @@ public class MediaPlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mMediaPlayer.pause();
+
+                isPlayed = false;
+                if(!isPlayed)
+                    mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
+
+                if (!isPaused)
+                    mPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
+
             }
         });
 
@@ -115,12 +140,45 @@ public class MediaPlayerFragment extends Fragment {
             public void onClick(View v) {
                 int currentPosition = mMediaPlayer.getCurrentPosition();
 
-                if(currentPosition - mSeekBackwardTime >= 0){
+                if (currentPosition - mSeekBackwardTime >= 0) {
                     mMediaPlayer.seekTo(currentPosition - mSeekBackwardTime);
-                }else{
+                } else {
                     mMediaPlayer.seekTo(0);
                 }
             }
         });
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(seekBar != null && fromUser){
+                    mMediaPlayer.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mSeekBar.setProgress(mMediaPlayer.getCurrentPosition());
+            mHandler.postDelayed(this, 0);
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mHandler.removeCallbacks(mRunnable);
     }
 }
