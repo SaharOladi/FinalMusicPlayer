@@ -2,101 +2,97 @@ package com.example.musicplayer.model;
 
 public class Song implements Comparable{
 
-    private Long mSongId;
-    private String mSongTitle;
-    private Long mAlbumId;
-    private String mAlbumTitle;
-    private Long mArtistId;
-    private String mArtistName;
-    private String fullPath;
-    private int songDuration;
+    public  long id;
+    public  String title;
+    public  long albumId;
+    public  String albumName;
+    public  long artistId;
+    public  String artistName;
+    public  int duration;
+
+
+    public Song(long id, String title, long albumId,
+                String albumName, long artistId, String artistName,
+                int duration, int trackNumber) {
+        this.id = id;
+        this.title = title;
+        this.albumId = albumId;
+        this.albumName = albumName;
+        this.artistId = artistId;
+        this.artistName = artistName;
+        this.duration = duration;
+        this.trackNumber = trackNumber;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public long getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(long artistId) {
+        this.artistId = artistId;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getTrackNumber() {
+        return trackNumber;
+    }
+
+    public void setTrackNumber(int trackNumber) {
+        this.trackNumber = trackNumber;
+    }
+
+    public  int trackNumber;
 
     public Song() {
     }
 
-    public Song(Long songId, String songTitle, Long albumId, String albumTitle,
-                Long artistId, String artistName, String fullPath, int songDuration) {
-
-        mSongId = songId;
-        mSongTitle = songTitle;
-        mAlbumId = albumId;
-        mAlbumTitle = albumTitle;
-        mArtistId = artistId;
-        mArtistName = artistName;
-        this.fullPath = fullPath;
-        this.songDuration = songDuration;
-    }
-
-    public Song(String songTitle, String albumTitle, String artistName, String fullPath) {
-        mSongTitle = songTitle;
-        mAlbumTitle = albumTitle;
-        mArtistName = artistName;
-        this.fullPath = fullPath;
-    }
-
-    public Long getSongId() {
-        return mSongId;
-    }
-
-    public void setSongId(Long songId) {
-        mSongId = songId;
-    }
-
-    public String getSongTitle() {
-        return mSongTitle;
-    }
-
-    public void setSongTitle(String songTitle) {
-        mSongTitle = songTitle;
-    }
-
-    public Long getAlbumId() {
-        return mAlbumId;
-    }
-
-    public void setAlbumId(Long albumId) {
-        mAlbumId = albumId;
-    }
-
-    public String getAlbumTitle() {
-        return mAlbumTitle;
-    }
-
-    public void setAlbumTitle(String albumTitle) {
-        mAlbumTitle = albumTitle;
-    }
-
-    public Long getArtistId() {
-        return mArtistId;
-    }
-
-    public void setArtistId(Long artistId) {
-        mArtistId = artistId;
-    }
-
-    public String getArtistName() {
-        return mArtistName;
-    }
-
-    public void setArtistName(String artistName) {
-        mArtistName = artistName;
-    }
-
-    public String getFullPath() {
-        return fullPath;
-    }
-
-    public void setFullPath(String fullPath) {
-        this.fullPath = fullPath;
-    }
-
-    public int getSongDuration() {
-        return songDuration;
-    }
-
-    public void setSongDuration(int songDuration) {
-        this.songDuration = songDuration;
-    }
 
     @Override
     public int compareTo(Object o) {

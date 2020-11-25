@@ -16,7 +16,6 @@ public class AlbumRepository {
     public static final String TAG = "AlbumRepository";
     private static AlbumRepository sInstance;
     private List<Album> mAlbums = new ArrayList<>();
-    private List<Song> mSongs = new ArrayList<>();
     private Context mContext;
 
     public AlbumRepository(Context context) {
@@ -51,11 +50,12 @@ public class AlbumRepository {
 
     public List<Song> getSongs(Long albumId){
 
+        List<Song> mSongs = new ArrayList<>();
         String selection = MediaStore.Audio.Albums.ALBUM_ID+ "=?";
         String[] selectionArgs = new String[] {"" + albumId};
 
         MusicCursorWrapper cursor = new MusicCursorWrapper(mContext.getContentResolver()
-                .query(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         null, selection, selectionArgs, null));
         if (cursor != null && cursor.moveToFirst()) {
             try {

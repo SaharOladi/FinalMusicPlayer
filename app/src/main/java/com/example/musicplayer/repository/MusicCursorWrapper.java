@@ -41,19 +41,17 @@ public class MusicCursorWrapper extends CursorWrapper {
     public Song getSong() {
 
         long id = getLong(getColumnIndex(MediaStore.Audio.Media._ID));
-        String FilePath = getString(getColumnIndex(MediaStore.Audio.Media.DATA));
         String Title = getString(getColumnIndex(MediaStore.Audio.Media.TITLE));
         String Artist = getString(getColumnIndex(MediaStore.Audio.Media.ARTIST));
         String Album = getString(getColumnIndex(MediaStore.Audio.Media.ALBUM));
         int Duration = getInt(getColumnIndex(MediaStore.Audio.Media.DURATION));
 
         Song song = new Song();
-        song.setSongId(id);
-        song.setSongTitle(Title);
-        song.setAlbumTitle(Album);
+        song.setId(id);
+        song.setTitle(Title);
+        song.setAlbumName(Album);
         song.setArtistName(Artist);
-        song.setSongDuration(Duration);
-        song.setFullPath(FilePath);
+        song.setDuration(Duration);
 
         return song;
     }

@@ -1,6 +1,5 @@
 package com.example.musicplayer.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,31 +13,30 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.musicplayer.R;
-import com.example.musicplayer.activity.AlbumPlayListActivity;
-import com.example.musicplayer.activity.MediaPlayerActivity;
 import com.example.musicplayer.model.Song;
-import com.example.musicplayer.repository.SongRepository;
+import com.example.musicplayer.repository.SingerRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PlayListFragment extends Fragment {
 
+public class SingerPlayListFragment extends Fragment {
 
+    public static final String ARGS_SINGER_FRAGMENT = "ARGS_SINGER";
     private RecyclerView mRecyclerView;
-    private SongAdapter mSongAdapter;
+    private SingerPlayListAdapter mAlbumAdapter;
 
-    private SongRepository mRepository;
+    private long singerAlbumId;
+    private List<Song> mSongList;
 
-
-    public PlayListFragment() {
+    public SingerPlayListFragment() {
         // Required empty public constructor
     }
 
 
-    public static PlayListFragment newInstance() {
-        PlayListFragment fragment = new PlayListFragment();
+    public static SingerPlayListFragment newInstance(long singerAlbumId) {
+        SingerPlayListFragment fragment = new SingerPlayListFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARGS_SINGER_FRAGMENT, singerAlbumId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,23 +45,23 @@ public class PlayListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRepository = SongRepository.getInstance(getActivity());
-
+        singerAlbumId = (long) getArguments().getSerializable(ARGS_SINGER_FRAGMENT);
+        mSongList = SingerRepository.getInstance(getActivity()).getSongs(getActivity(), singerAlbumId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_singer_playlist, container, false);
         findViews(view);
-        initViews();
 
+        initViews();
         return view;
     }
 
     private void findViews(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView = view.findViewById(R.id.recycler_view_singer_playlist);
     }
 
     private void initViews() {
@@ -72,24 +70,21 @@ public class PlayListFragment extends Fragment {
     }
 
     public void updateUI() {
-        List<Song> songs = mRepository.getSongs();
-        if (mSongAdapter == null) {
-            mSongAdapter = new SongAdapter(songs);
-            mRecyclerView.setAdapter(mSongAdapter);
+        if (mAlbumAdapter == null) {
+            mAlbumAdapter = new SingerPlayListAdapter(mSongList);
+            mRecyclerView.setAdapter(mAlbumAdapter);
         } else {
-            mSongAdapter.setSongs(songs);
-            mSongAdapter.notifyDataSetChanged();
+            mAlbumAdapter.setSongs(mSongList);
+            mAlbumAdapter.notifyDataSetChanged();
         }
-
-
     }
 
-    private class SongHolder extends RecyclerView.ViewHolder {
+    private class SingerPlayListHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle;
         private Song mSong;
 
-        public SongHolder(@NonNull View itemView) {
+        public SingerPlayListHolder(@NonNull View itemView) {
             super(itemView);
 
             findHolderViews(itemView);
@@ -103,9 +98,7 @@ public class PlayListFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent mediaPlayerSongId = MediaPlayerActivity.newIntent(getActivity(),
-                            mSong.getId());
-                    startActivity(mediaPlayerSongId);
+
                 }
             });
 
@@ -115,17 +108,16 @@ public class PlayListFragment extends Fragment {
             mTitle = itemView.findViewById(R.id.name);
         }
 
-        private void bindSong(Song song) {
+        private void bindSongs(Song song) {
             mSong = song;
             mTitle.setText(song.getTitle());
         }
 
     }
 
-    private class SongAdapter extends RecyclerView.Adapter<SongHolder> {
+    private class SingerPlayListAdapter extends RecyclerView.Adapter<SingerPlayListHolder> {
 
         private List<Song> mSongs;
-        private List<Song> mSearchSongs;
 
 
         public List<Song> getSongs() {
@@ -134,30 +126,27 @@ public class PlayListFragment extends Fragment {
 
         public void setSongs(List<Song> songs) {
             this.mSongs = songs;
-            if (songs != null)
-                this.mSearchSongs = new ArrayList<>(songs);
             notifyDataSetChanged();
         }
 
-        public SongAdapter(List<Song> songs) {
+        public SingerPlayListAdapter(List<Song> songs) {
             mSongs = songs;
-            mSearchSongs = new ArrayList<>(songs);
         }
 
         @NonNull
         @Override
-        public SongHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public SingerPlayListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getActivity())
                     .inflate(R.layout.row_item, parent, false);
 
-            SongHolder songHolder = new SongHolder(view);
-            return songHolder;
+            SingerPlayListHolder singerHolder = new SingerPlayListHolder(view);
+            return singerHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull SongHolder holder, int position) {
+        public void onBindViewHolder(@NonNull SingerPlayListHolder holder, int position) {
             Song song = mSongs.get(position);
-            holder.bindSong(song);
+            holder.bindSongs(song);
         }
 
         @Override
@@ -167,17 +156,4 @@ public class PlayListFragment extends Fragment {
 
 
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-
-
 }

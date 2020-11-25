@@ -9,19 +9,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.musicplayer.R;
-import com.example.musicplayer.fragment.AlbumPlayListFragment;
+import com.example.musicplayer.fragment.SingerPlayListFragment;
 
-public class AlbumPlayListActivity extends AppCompatActivity {
+public class SingerPlayListActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ALBUM = "EXTRA_ALBUM.com.example.musicplayer.activity";
-    private static long mAlbumId;
+    public static final String EXTRA_SINGER = "EXTRA_SINGER.com.example.musicplayer.activity";
+    private static long mSingerAlbumId;
 
-    public static Intent newIntent(Context context, long albumId) {
-        mAlbumId = albumId;
-        Intent intent = new Intent(context, AlbumPlayListActivity.class);
-        intent.putExtra(EXTRA_ALBUM, albumId);
+    public static Intent newIntent(Context context, long singerId) {
+        mSingerAlbumId = singerId;
+        Intent intent = new Intent(context, SingerPlayListActivity.class);
+        intent.putExtra(EXTRA_SINGER, singerId);
         return intent;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,10 @@ public class AlbumPlayListActivity extends AppCompatActivity {
 
 
         if (fragment == null) {
-            AlbumPlayListFragment albumPlayListFragment = AlbumPlayListFragment.newInstance(mAlbumId);
+            SingerPlayListFragment singerPlayListFragment = SingerPlayListFragment.newInstance(mSingerAlbumId);
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_container_activity, albumPlayListFragment)
+                    .replace(R.id.fragment_container_activity, singerPlayListFragment)
                     .commit();
         }
     }

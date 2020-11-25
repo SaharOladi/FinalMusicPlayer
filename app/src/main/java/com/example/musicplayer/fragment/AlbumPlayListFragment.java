@@ -111,7 +111,7 @@ public class AlbumPlayListFragment extends Fragment {
 
         private void bindSongs(Song song) {
             mSong = song;
-            mTitle.setText(song.getSongTitle());
+            mTitle.setText(song.getTitle());
         }
 
     }

@@ -3,6 +3,16 @@ package com.example.musicplayer.model;
 public class Singer implements Comparable{
 
     private Long mSingerId;
+
+    public Long getSingerAlbumId() {
+        return mSingerAlbumId;
+    }
+
+    public void setSingerAlbumId(Long singerAlbumId) {
+        mSingerAlbumId = singerAlbumId;
+    }
+
+    private Long mSingerAlbumId;
     private String mSingerName;
     private int mTrackNumber;
 
@@ -17,10 +27,11 @@ public class Singer implements Comparable{
     public Singer() {
     }
 
-    public Singer(String singerName, Long singerId, int trackNumber) {
+    public Singer(String singerName, Long singerId, Long singerAlbumId, int trackNumber) {
         mSingerName = singerName;
         mSingerId = singerId;
         mTrackNumber = trackNumber;
+        mSingerAlbumId = singerAlbumId;
     }
 
 

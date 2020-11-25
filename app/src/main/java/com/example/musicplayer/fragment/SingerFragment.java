@@ -1,5 +1,6 @@
 package com.example.musicplayer.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,8 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.musicplayer.R;
+import com.example.musicplayer.activity.AlbumPlayListActivity;
+import com.example.musicplayer.activity.SingerPlayListActivity;
 import com.example.musicplayer.model.Singer;
 import com.example.musicplayer.repository.SingerRepository;
 
@@ -91,7 +94,7 @@ public class SingerFragment extends Fragment {
     private class SingerHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle;
-        private Singer mSinger;
+        private long mSingerId;
 
         public SingerHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,7 +110,9 @@ public class SingerFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent singerPlayListActivity = SingerPlayListActivity.newIntent(getActivity(),
+                            mSingerId);
+                    startActivity(singerPlayListActivity);
                 }
             });
 
@@ -118,7 +123,7 @@ public class SingerFragment extends Fragment {
         }
 
         private void bindSingers(Singer singer) {
-            mSinger = singer;
+            mSingerId = singer.getSingerId();
             mTitle.setText(singer.getSingerName());
         }
 
@@ -127,7 +132,6 @@ public class SingerFragment extends Fragment {
     private class SingerAdapter extends RecyclerView.Adapter<SingerHolder> {
 
         private List<Singer> mSingers;
-        private List<Singer> mSearchSingers;
 
 
         public List<Singer> getSingers() {
@@ -136,14 +140,10 @@ public class SingerFragment extends Fragment {
 
         public void setSingers(List<Singer> singers) {
             this.mSingers = singers;
-            if (singers != null)
-                this.mSearchSingers = new ArrayList<>(singers);
-            notifyDataSetChanged();
         }
 
         public SingerAdapter(List<Singer> singers) {
             mSingers = singers;
-            mSearchSingers = new ArrayList<>(singers);
         }
 
         @NonNull
