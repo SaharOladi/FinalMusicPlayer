@@ -89,6 +89,14 @@
                     android:layout_weight="1"
                     android:src="@drawable/ic_action_backward" />
             </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:max="10"
+                android:progress="3" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
