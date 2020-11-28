@@ -47,7 +47,7 @@ public class MediaPlayerFragment extends Fragment {
 
     private long mSongId;
     private Song currentSong, nextSong;
-    ;
+    int count = 0;
 
     private SongRepository mRepository;
     private List<Song> mSongList = new ArrayList<>();
@@ -138,17 +138,20 @@ public class MediaPlayerFragment extends Fragment {
                 mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        int currentIndexMusic = findCurrentSongPosition(currentSong.getId());
-                        if (currentIndexMusic == mSongList.size() - 1) {
-                            nextSong = mSongList.get(0);
-                            initMediaPlayer(nextSong);
-                            setupSongView(nextSong.getId());
-                        } else {
-                            nextSong = mSongList.get(currentIndexMusic + 1);
-                            initMediaPlayer(nextSong);
-                            setupSongView(nextSong.getId());
+                        if (count < mSongList.size()) {
+                            int currentIndexMusic = findCurrentSongPosition(currentSong.getId());
+                            if (currentIndexMusic == mSongList.size() - 1) {
+                                nextSong = mSongList.get(0);
+                                initMediaPlayer(nextSong);
+                                setupSongView(nextSong.getId());
+                            } else {
+                                nextSong = mSongList.get(currentIndexMusic + 1);
+                                initMediaPlayer(nextSong);
+                                setupSongView(nextSong.getId());
+                            }
+                            currentSong = nextSong;
+                            count++;
                         }
-                        currentSong = nextSong;
                     }
                 });
             }
@@ -199,10 +202,7 @@ public class MediaPlayerFragment extends Fragment {
         });
 
 
-
     }
-
-
 
 
     private void initMediaPlayer(Song song) {
