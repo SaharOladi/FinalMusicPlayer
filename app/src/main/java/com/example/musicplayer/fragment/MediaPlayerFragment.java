@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -151,6 +152,7 @@ public class MediaPlayerFragment extends Fragment {
                             }
                             currentSong = nextSong;
                             count++;
+                            Log.d("onCompletion!!!!!", "onCompletion: " + count);
                         }
                     }
                 });
