@@ -1,6 +1,8 @@
 package com.example.musicplayer.model;
 
-public class Song implements Comparable{
+import android.media.MediaPlayer;
+
+public class Song extends MediaPlayer implements Comparable{
 
     public  long id;
     public  String title;

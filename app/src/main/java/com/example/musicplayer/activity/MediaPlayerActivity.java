@@ -6,16 +6,19 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.MediaPlayerFragment;
 import com.example.musicplayer.fragment.SingerPlayListFragment;
 
-public class MediaPlayerActivity extends AppCompatActivity {
+public class MediaPlayerActivity extends AppCompatActivity implements MediaPlayerFragment.CallBack {
 
     public static final String EXTRA_MEDIA_PLAYER = "EXTRA_SINGER.com.example.musicplayer.activity";
     private static long mSongId;
+
+    private MediaPlayerFragment.CallBack mCallBack;
 
     public static Intent newIntent(Context context, long songId) {
         mSongId = songId;
@@ -47,22 +50,15 @@ public class MediaPlayerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //TODO: ask how can i have callback here? because it refer null object.
-        mCallBack.onStopPlaying();
     }
 
 
-    public interface CallBack{
-        void onStopPlaying();
-    }
-
-    private CallBack mCallBack;
-
-    public CallBack getCallBack() {
-        return mCallBack;
-    }
-
-    public void setCallBack(CallBack callBack) {
-        mCallBack = callBack;
+    @Override
+    public void onStopPlaying(MediaPlayer mediaPlayer) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+        }
     }
 }
