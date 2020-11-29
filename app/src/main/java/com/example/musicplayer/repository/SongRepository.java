@@ -1,6 +1,7 @@
 package com.example.musicplayer.repository;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 
 import com.example.musicplayer.model.Song;
 
@@ -12,6 +13,7 @@ public class SongRepository {
 
     private static SongRepository sInstance;
     private List<Song> mSongs = new ArrayList<>();
+    private List<Song> mSongsLiked = new ArrayList<>();
     private Context mContext;
 
     public SongRepository(Context context) {
@@ -40,6 +42,15 @@ public class SongRepository {
         }
         Collections.sort(mSongs);
         return mSongs;
+    }
+
+    public List<Song> getSongsLiked() {
+        for (int i = 0; i < mSongs.size(); i++) {
+            if (mSongs.get(i).isLike == true)
+                mSongsLiked.add(mSongs.get(i));
+        }
+        Collections.sort(mSongsLiked);
+        return mSongsLiked;
     }
 
 }

@@ -11,11 +11,14 @@ import android.os.Bundle;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.MediaPlayerFragment;
-import com.example.musicplayer.fragment.SingerPlayListFragment;
+
 
 public class MediaPlayerActivity extends AppCompatActivity implements MediaPlayerFragment.CallBack {
 
-    public static final String EXTRA_MEDIA_PLAYER = "EXTRA_SINGER.com.example.musicplayer.activity";
+    public static final String EXTRA_MEDIA_PLAYER =
+            "EXTRA_SINGER.com.example.musicplayer.activity";
+
+
     private static long mSongId;
 
     private MediaPlayerFragment.CallBack mCallBack;
@@ -39,7 +42,8 @@ public class MediaPlayerActivity extends AppCompatActivity implements MediaPlaye
 
 
         if (fragment == null) {
-            MediaPlayerFragment mediaPlayerFragment = MediaPlayerFragment.newInstance(mSongId);
+            MediaPlayerFragment mediaPlayerFragment =
+                    MediaPlayerFragment.newInstance(mSongId);
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.fragment_container_media_player_activity, mediaPlayerFragment)
@@ -61,4 +65,6 @@ public class MediaPlayerActivity extends AppCompatActivity implements MediaPlaye
             mediaPlayer.release();
         }
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.musicplayer.fragment;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +30,9 @@ import com.example.musicplayer.model.Song;
 import com.example.musicplayer.repository.SongRepository;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +55,6 @@ public class MediaPlayerFragment extends Fragment {
 
     private long mSongId;
     private Song currentSong;
-    int count = 0;
 
     private SongRepository mRepository;
     private List<Song> mSongList = new ArrayList<>();
@@ -76,8 +79,11 @@ public class MediaPlayerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mSongId = (long) getArguments().getSerializable(ARGS_MEDIA_PLAYER_SONG_ID);
+
         mRepository = SongRepository.getInstance(getActivity());
         mSongList = mRepository.getSongs();
+        mLikeSongs = mRepository.getSongsLiked();
+
         currentSong = mSongList.get(findCurrentSongPosition(mSongId));
 
     }
@@ -98,6 +104,7 @@ public class MediaPlayerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_media_player, container, false);
 
         findViews(view);
+
         initViews();
 
         initMediaPlayer();
@@ -105,6 +112,17 @@ public class MediaPlayerFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void initViews() {
+        for (int i = 0; i < mLikeSongs.size(); i++) {
+            if(currentSong.getId() == mLikeSongs.get(i).getId())
+            {
+                mLike.setColorFilter(Color.RED);
+            }else{
+                mLike.setColorFilter(Color.BLACK);
+            }
+        }
     }
 
     private void findViews(View view) {
@@ -119,13 +137,6 @@ public class MediaPlayerFragment extends Fragment {
         mSongTitle = view.findViewById(R.id.song_title);
         mSeekBar = view.findViewById(R.id.seekBar);
 
-    }
-
-    private void initViews() {
-        for (int i = 0; i < mLikeSongs.size() ; i++) {
-            if(mLikeSongs.get(i).isLike == true)
-                mLike.setColorFilter(Color.RED);
-        }
     }
 
 
@@ -172,14 +183,14 @@ public class MediaPlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int currentPosition = findCurrentSongPosition(currentSong.getId());
-                if(currentPosition == (mSongList.size()-1)){
+                if (currentPosition == (mSongList.size() - 1)) {
                     currentSong = mSongList.get(0);
                     initMediaPlayer(currentSong);
                     setupSongView(currentSong.getId());
                     mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
 
-                }else{
-                    currentSong = mSongList.get(currentPosition+1);
+                } else {
+                    currentSong = mSongList.get(currentPosition + 1);
                     initMediaPlayer(currentSong);
                     setupSongView(currentSong.getId());
                     mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
@@ -193,13 +204,13 @@ public class MediaPlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int currentPosition = findCurrentSongPosition(currentSong.getId());
-                if(currentPosition == 0){
-                    currentSong = mSongList.get(mSongList.size()-1);
+                if (currentPosition == 0) {
+                    currentSong = mSongList.get(mSongList.size() - 1);
                     initMediaPlayer(currentSong);
                     setupSongView(currentSong.getId());
                     mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
-                }else{
-                    currentSong = mSongList.get(currentPosition-1);
+                } else {
+                    currentSong = mSongList.get(currentPosition - 1);
                     initMediaPlayer(currentSong);
                     setupSongView(currentSong.getId());
                     mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
@@ -211,9 +222,11 @@ public class MediaPlayerFragment extends Fragment {
         mLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLikeSongs.add(currentSong);
-                currentSong.setLike(true);
-                mLike.setColorFilter(Color.RED);
+                if (!mLikeSongs.contains(currentSong)) {
+                    mLikeSongs.add(currentSong);
+                    currentSong.setLike(true);
+                    mLike.setColorFilter(Color.RED);
+                }
             }
         });
 
@@ -242,8 +255,8 @@ public class MediaPlayerFragment extends Fragment {
         mShuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Random random  = new Random();
-                currentSong = mSongList.get(random.nextInt(mSongList.size()-1));
+                Random random = new Random();
+                currentSong = mSongList.get(random.nextInt(mSongList.size() - 1));
                 initMediaPlayer(currentSong);
                 setupSongView(currentSong.getId());
             }
@@ -285,6 +298,8 @@ public class MediaPlayerFragment extends Fragment {
             mSongTitle.setText(mSongList.get(
                     findCurrentSongPosition(id)).getTitle() + "");
 
+        initViews();
+
         mSeekForwardTime = 5 * 1000;
         mSeekBackwardTime = 5 * 1000;
 
@@ -314,6 +329,7 @@ public class MediaPlayerFragment extends Fragment {
         super.onDestroy();
         mMediaPlayer.release();
     }
+
 
     public interface CallBack {
         void onStopPlaying(MediaPlayer mediaPlayer);
