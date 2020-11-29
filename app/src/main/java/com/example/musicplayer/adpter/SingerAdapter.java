@@ -86,8 +86,8 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.SingerHold
         }
 
         private void findHolderViews(@NonNull View itemView) {
-            mTitle = itemView.findViewById(R.id.name);
-            mTrackNumber = itemView.findViewById(R.id.singer);
+            mTitle = itemView.findViewById(R.id.row_item_playlist_title);
+            mTrackNumber = itemView.findViewById(R.id.row_item_playlist_singer);
         }
 
         private void bindSingers(Singer singer) {

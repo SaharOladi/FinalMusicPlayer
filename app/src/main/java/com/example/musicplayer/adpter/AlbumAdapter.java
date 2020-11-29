@@ -84,8 +84,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
         }
 
         private void findHolderViews(@NonNull View itemView) {
-            mTitle = itemView.findViewById(R.id.name);
-            mSinger = itemView.findViewById(R.id.singer);
+            mTitle = itemView.findViewById(R.id.row_item_playlist_title);
+            mSinger = itemView.findViewById(R.id.row_item_playlist_singer);
         }
 
         private void bindAlbums(Album album) {

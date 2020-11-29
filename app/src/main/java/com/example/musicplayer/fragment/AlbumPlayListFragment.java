@@ -106,7 +106,7 @@ public class AlbumPlayListFragment extends Fragment {
         }
 
         private void findHolderViews(@NonNull View itemView) {
-            mTitle = itemView.findViewById(R.id.name);
+            mTitle = itemView.findViewById(R.id.row_item_playlist_title);
         }
 
         private void bindSongs(Song song) {
