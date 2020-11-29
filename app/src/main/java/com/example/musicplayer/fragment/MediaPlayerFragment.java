@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -17,6 +18,9 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MediaPlayerActivity;
+import com.example.musicplayer.adpter.MusicAdapter;
 import com.example.musicplayer.model.Song;
 import com.example.musicplayer.repository.SongRepository;
 
@@ -40,11 +45,10 @@ import java.util.Random;
 public class MediaPlayerFragment extends Fragment {
 
 
+    //TODO: edit like songs, add user permission.
     public static final String ARGS_MEDIA_PLAYER_SONG_ID = "ARGS_MEDIA_PLAYER_SONG_ID";
 
-    // TODO: create service, permission from user to access and part that has mostly repeated song and ...
-    //TODO: add a layout above of list, that have 2 part, one part is playAll and other is Shuffle
-    //TODO:play next song automatically
+
     private ImageView mPlay, mNext, mPrev, mForward, mBackward, mShuffle, mRepeat, mLike;
     private TextView mSongTitle;
     private SeekBar mSeekBar;
@@ -61,6 +65,7 @@ public class MediaPlayerFragment extends Fragment {
     private List<Song> mLikeSongs = new ArrayList<>();
 
     private Handler mHandler = new Handler();
+
 
     public MediaPlayerFragment() {
         // Required empty public constructor
@@ -115,11 +120,10 @@ public class MediaPlayerFragment extends Fragment {
     }
 
     private void initViews() {
-        for (int i = 0; i < mLikeSongs.size(); i++) {
-            if(currentSong.getId() == mLikeSongs.get(i).getId())
-            {
+        for (int i = 0; i < mSongList.size(); i++) {
+            if (mSongList.get(i).isLike == true) {
                 mLike.setColorFilter(Color.RED);
-            }else{
+            } else {
                 mLike.setColorFilter(Color.BLACK);
             }
         }
@@ -285,7 +289,7 @@ public class MediaPlayerFragment extends Fragment {
     }
 
 
-    private void initMediaPlayer(Song song) {
+    public void initMediaPlayer(Song song) {
         mMediaPlayer.stop();
         mMediaPlayer.reset();
         mMediaPlayer = new MediaPlayer();
@@ -293,7 +297,7 @@ public class MediaPlayerFragment extends Fragment {
         mMediaPlayer.start();
     }
 
-    private void setupSongView(long id) {
+    public void setupSongView(long id) {
         if (!mSongList.get(findCurrentSongPosition(id)).getTitle().equals(null))
             mSongTitle.setText(mSongList.get(
                     findCurrentSongPosition(id)).getTitle() + "");
@@ -323,6 +327,8 @@ public class MediaPlayerFragment extends Fragment {
         super.onPause();
         mHandler.removeCallbacks(mRunnable);
     }
+
+
 
     @Override
     public void onDestroy() {

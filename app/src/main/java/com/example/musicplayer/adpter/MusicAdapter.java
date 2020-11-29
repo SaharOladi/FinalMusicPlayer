@@ -3,12 +3,18 @@ package com.example.musicplayer.adpter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.R;
@@ -16,11 +22,14 @@ import com.example.musicplayer.activity.MediaPlayerActivity;
 import com.example.musicplayer.model.Song;
 import com.example.musicplayer.repository.SongRepository;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> {
+public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> implements Filterable {
 
     private List<Song> mSongs;
+    private List<Song> mSearchSongs;
     private Context mContext;
 
     public List<Song> getSongs() {
@@ -29,11 +38,15 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
 
     public void setSongs(List<Song> songs) {
         this.mSongs = songs;
+        if (songs != null)
+            this.mSearchSongs = new ArrayList<>(songs);
+        notifyDataSetChanged();
     }
 
     public MusicAdapter(Context context, List<Song> songs) {
         mContext = context;
         mSongs = songs;
+        mSearchSongs = new ArrayList<>(songs);
     }
 
     @NonNull
@@ -98,6 +111,39 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
                 mSinger.setText(song.getArtistName());
         }
 
+    }
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                List<Song> filteredList = new ArrayList<>();
+
+                if (charSequence.toString().isEmpty()) {
+                    filteredList.addAll(mSearchSongs);
+                } else {
+                    for (Song song : mSearchSongs) {
+                        if (song.getTitle().toLowerCase().trim().contains(charSequence.toString().toLowerCase().trim()) ||
+                                song.getArtistName().toLowerCase().trim().contains(charSequence.toString().toLowerCase().trim()) ||
+                                song.getAlbumName().toLowerCase().trim().contains(charSequence.toString().toLowerCase().trim())) {
+                            filteredList.add(song);
+                        }
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                if (mSongs != null)
+                    mSongs.clear();
+                if (filterResults.values != null)
+                    mSongs.addAll((Collection<? extends Song>) filterResults.values);
+            }
+        };
     }
 
 }

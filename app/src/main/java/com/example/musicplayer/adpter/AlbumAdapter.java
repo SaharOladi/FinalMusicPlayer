@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,12 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.AlbumPlayListActivity;
 import com.example.musicplayer.model.Album;
+import com.example.musicplayer.model.Song;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder> {
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder> implements Filterable {
 
     private List<Album> mAlbums;
+    private List<Album> mSearchAlbums;
+
     private Context mContext;
 
     public List<Album> getAlbums() {
@@ -27,11 +34,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
     public void setAlbums(List<Album> albums) {
         this.mAlbums = albums;
+        if (albums != null)
+            this.mSearchAlbums = new ArrayList<>(albums);
     }
 
     public AlbumAdapter(Context context, List<Album> albums) {
         mContext = context;
         mAlbums = albums;
+        mSearchAlbums = new ArrayList<>(albums);
     }
 
     @NonNull
@@ -97,6 +107,39 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
         }
 
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                List<Album> filteredList = new ArrayList<>();
+
+                if (charSequence.toString().isEmpty()) {
+                    filteredList.addAll(mSearchAlbums);
+                } else {
+                    for (Album album : mSearchAlbums) {
+                        if (album.getAlbumTitle().toLowerCase().trim().contains(charSequence.toString().toLowerCase().trim()) ||
+                                album.getAlbumArtist().toLowerCase().trim().contains(charSequence.toString().toLowerCase().trim())) {
+                            filteredList.add(album);
+                        }
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                if (mAlbums != null)
+                    mAlbums.clear();
+                if (filterResults.values != null)
+                    mAlbums.addAll((Collection<? extends Album>) filterResults.values);
+            }
+        };
     }
 
 

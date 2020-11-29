@@ -54,7 +54,7 @@ public class SingerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         mRepository = SingerRepository.getInstance(getActivity());
 
 
@@ -90,6 +90,27 @@ public class SingerFragment extends Fragment {
             mSingerAdapter.setSingers(singers);
             mSingerAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.play_list_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mSingerAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
 

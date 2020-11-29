@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+
 import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.MediaPlayerFragment;
 
@@ -65,6 +66,5 @@ public class MediaPlayerActivity extends AppCompatActivity implements MediaPlaye
             mediaPlayer.release();
         }
     }
-
 
 }

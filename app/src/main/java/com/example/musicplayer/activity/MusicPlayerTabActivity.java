@@ -2,6 +2,7 @@ package com.example.musicplayer.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -10,20 +11,33 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.AlbumFragment;
 import com.example.musicplayer.fragment.PlayListFragment;
 import com.example.musicplayer.fragment.SingerFragment;
+import com.example.musicplayer.model.Album;
+import com.example.musicplayer.model.Singer;
+import com.example.musicplayer.model.Song;
+import com.example.musicplayer.repository.AlbumRepository;
+import com.example.musicplayer.repository.SingerRepository;
+import com.example.musicplayer.repository.SongRepository;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MusicPlayerTabActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
     MusicPageAdapter mMusicPageAdapter;
-
 
 
     public static Intent newIntent(Context context) {
@@ -95,26 +109,25 @@ public class MusicPlayerTabActivity extends AppCompatActivity {
                     return singerFragment;
                 default:
                     return null;
-        }}
+            }
+        }
 
         @Override
         public int getItemCount() {
             return 3;
         }
 
-    }
 
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        mMusicPageAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        mMusicPageAdapter.notifyDataSetChanged();
     }
 
 }
