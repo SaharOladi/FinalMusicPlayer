@@ -26,6 +26,8 @@ public class PlayListFragment extends Fragment {
     private SongRepository mRepository;
 
 
+
+
     public PlayListFragment() {
         // Required empty public constructor
     }
@@ -41,6 +43,7 @@ public class PlayListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         mRepository = SongRepository.getInstance(getActivity());
 

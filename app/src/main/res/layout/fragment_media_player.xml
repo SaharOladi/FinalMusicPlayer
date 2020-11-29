@@ -4,52 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+
+    android:background="@drawable/image_music">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/item_card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        app:cardBackgroundColor="#A8F4511E"
-        app:cardCornerRadius="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardBackgroundColor="#A8DDDDDD"
+        app:cardCornerRadius="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="4">
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/song_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:paddingTop="2dp"
+                android:textColor="#020202"
+                android:textSize="14sp"
+                tools:text="This is for testing" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="3"
-                android:orientation="vertical"
+                android:layout_weight="0.5"
+                android:orientation="horizontal"
+                android:paddingTop="4dp"
                 android:weightSum="3">
 
                 <ImageView
-                    android:id="@+id/song_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="4dp"
-                    app:srcCompat="@mipmap/ic_defaul_music" />
+                    android:id="@+id/btn_shuffle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_action_shuffle_btn"
+                    app:tint="@color/black" />
 
-                <TextView
-                    android:id="@+id/song_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="center"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:textColor="#020202"
-                    android:textSize="14sp"
-                    tools:text="This is for testing" />
+
+                <ImageView
+                    android:id="@+id/btn_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_action_like"
+                    app:tint="@color/black" />
+
+                <ImageView
+                    android:id="@+id/btn_repeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_action_repeate_btn"
+                    app:tint="@color/black" />
 
             </LinearLayout>
 
@@ -59,28 +74,48 @@
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:paddingRight="2dp"
-                android:weightSum="3">
+                android:weightSum="5">
+
 
                 <ImageView
                     android:id="@+id/btn_backward"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_action_backward" />
+                    android:src="@drawable/ic_action_backward"
+                    app:tint="@color/black" />
+
+                <ImageView
+                    android:id="@+id/btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_action_back_btn"
+                    app:tint="@color/black" />
 
                 <ImageView
                     android:id="@+id/btn_play"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_action_play" />
+                    android:src="@drawable/ic_action_play"
+                    app:tint="@color/black" />
+
+                <ImageView
+                    android:id="@+id/btn_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_action_next_btn"
+                    app:tint="@color/black" />
 
                 <ImageView
                     android:id="@+id/btn_forward"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_action_forward" />
+                    android:src="@drawable/ic_action_forward"
+                    app:tint="@color/black" />
 
             </LinearLayout>
 
@@ -89,8 +124,13 @@
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:max="10"
-                android:progress="3" />
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:max="5"
+                android:progressDrawable="@drawable/progress_bar"
+                android:thumb="@drawable/ic_action_thumb"
+                android:thumbTint="#F60707" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

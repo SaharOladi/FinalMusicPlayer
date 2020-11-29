@@ -2,6 +2,8 @@ package com.example.musicplayer.model;
 
 import android.media.MediaPlayer;
 
+import java.util.List;
+
 public class Song extends MediaPlayer implements Comparable{
 
     public  long id;
@@ -11,6 +13,15 @@ public class Song extends MediaPlayer implements Comparable{
     public  long artistId;
     public  String artistName;
     public  int duration;
+    public boolean isLike;
+
+    public boolean isLike() {
+        return isLike;
+    }
+
+    public void setLike(boolean like) {
+        isLike = like;
+    }
 
     public Song(long id, String title, long albumId,
                 String albumName, long artistId, String artistName,

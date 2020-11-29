@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     @Override
     public MusicHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.row_item, parent, false);
+                .inflate(R.layout.row_item_playlist, parent, false);
 
         MusicHolder holder = new MusicHolder(view);
         return holder;
@@ -58,6 +59,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     public class MusicHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle, mSinger;
+        private ImageView mPlayBtn;
         private Song mSong;
 
         public MusicHolder(@NonNull View itemView) {
@@ -70,9 +72,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
 
         private void setListeners() {
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            mPlayBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View v) {
                     Intent mediaPlayerSongId = MediaPlayerActivity.newIntent(mContext,
                             mSong.getId());
                     mContext.startActivity(mediaPlayerSongId);
@@ -82,8 +84,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         }
 
         private void findHolderViews(@NonNull View itemView) {
-            mTitle = itemView.findViewById(R.id.name);
-            mSinger = itemView.findViewById(R.id.singer);
+            mTitle = itemView.findViewById(R.id.row_item_playlist_title);
+            mSinger = itemView.findViewById(R.id.row_item_playlist_singer);
+            mPlayBtn = itemView.findViewById(R.id.row_item_playlist_btn_play);
         }
 
         private void bindSong(Song song) {
