@@ -56,9 +56,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
     @Override
     public void onBindViewHolder(@NonNull AlbumHolder holder, int position) {
+
         Album album = mAlbums.get(position);
         holder.bindAlbums(album);
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -69,6 +72,30 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
         private TextView mTitle, mSinger;
         private long mAlbumId;
+
+        public TextView getTitle() {
+            return mTitle;
+        }
+
+        public void setTitle(TextView title) {
+            mTitle = title;
+        }
+
+        public TextView getSinger() {
+            return mSinger;
+        }
+
+        public void setSinger(TextView singer) {
+            mSinger = singer;
+        }
+
+        public long getAlbumId() {
+            return mAlbumId;
+        }
+
+        public void setAlbumId(long albumId) {
+            mAlbumId = albumId;
+        }
 
         public AlbumHolder(@NonNull View itemView) {
             super(itemView);

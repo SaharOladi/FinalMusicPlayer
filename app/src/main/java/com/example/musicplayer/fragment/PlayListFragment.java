@@ -108,4 +108,11 @@ public class PlayListFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRepository.getSongs().clear();
+        mMusicAdapter.notifyDataSetChanged();
+    }
+
 }

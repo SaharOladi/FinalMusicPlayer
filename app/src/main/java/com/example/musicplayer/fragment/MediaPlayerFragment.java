@@ -45,7 +45,10 @@ import java.util.Random;
 public class MediaPlayerFragment extends Fragment {
 
 
-    //TODO: edit like songs, add user permission.
+    //TODO: edit like songs,
+    // add user permission,
+    // edit play button when user press out of media player fragment,
+    // edit the play song in singer folder or album folder.
     public static final String ARGS_MEDIA_PLAYER_SONG_ID = "ARGS_MEDIA_PLAYER_SONG_ID";
 
 

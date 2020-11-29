@@ -1,15 +1,18 @@
 package com.example.musicplayer.adpter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.R;
+import com.example.musicplayer.activity.MediaPlayerActivity;
 import com.example.musicplayer.model.Song;
 
 import java.util.List;
@@ -39,7 +42,7 @@ public class AlbumPlayListAdapter extends RecyclerView.Adapter<AlbumPlayListAdap
     @Override
     public AlbumPlayListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.row_item, parent, false);
+                .inflate(R.layout.row_item_playlist, parent, false);
 
         AlbumPlayListHolder albumHolder = new AlbumPlayListHolder(view);
         return albumHolder;
@@ -59,7 +62,21 @@ public class AlbumPlayListAdapter extends RecyclerView.Adapter<AlbumPlayListAdap
     public class AlbumPlayListHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle;
+        private ImageView mPlay;
         private Song mSong;
+
+        public AlbumPlayListHolder(@NonNull View itemView, Song song) {
+            super(itemView);
+            mSong = song;
+        }
+
+        public Song getSong() {
+            return mSong;
+        }
+
+        public void setSong(Song song) {
+            mSong = song;
+        }
 
         public AlbumPlayListHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,10 +89,12 @@ public class AlbumPlayListAdapter extends RecyclerView.Adapter<AlbumPlayListAdap
 
         private void setListeners() {
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            mPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-
+                public void onClick(View v) {
+                    Intent mediaPlayerSongId = MediaPlayerActivity.newIntent(mContext,
+                            mSong.getId());
+                    mContext.startActivity(mediaPlayerSongId);
                 }
             });
 
@@ -83,6 +102,7 @@ public class AlbumPlayListAdapter extends RecyclerView.Adapter<AlbumPlayListAdap
 
         private void findHolderViews(@NonNull View itemView) {
             mTitle = itemView.findViewById(R.id.row_item_playlist_title);
+            mPlay = itemView.findViewById(R.id.row_item_playlist_btn_play);
         }
 
         private void bindSongs(Song song) {

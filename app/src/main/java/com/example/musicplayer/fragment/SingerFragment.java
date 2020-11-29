@@ -113,6 +113,13 @@ public class SingerFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRepository.getSingers().clear();
+        mSingerAdapter.notifyDataSetChanged();
+    }
+
 
 
 }

@@ -109,5 +109,11 @@ public class AlbumFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRepository.getAlbums().clear();
+        mAlbumAdapter.notifyDataSetChanged();
+    }
 }
 
