@@ -1,10 +1,26 @@
 package com.example.musicplayer.repository;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.util.Size;
 import android.widget.LinearLayout;
 
+import androidx.annotation.RequiresApi;
+
+import com.example.musicplayer.model.Album;
 import com.example.musicplayer.model.Song;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,11 +62,12 @@ public class SongRepository {
 
     public List<Song> getSongsLiked() {
         for (int i = 0; i < mSongs.size(); i++) {
-            if (mSongs.get(i).isLike == true)
+            if (mSongs.get(i).isLike == true && !mSongsLiked.contains(mSongs.get(i)))
                 mSongsLiked.add(mSongs.get(i));
         }
         Collections.sort(mSongsLiked);
         return mSongsLiked;
     }
+
 
 }

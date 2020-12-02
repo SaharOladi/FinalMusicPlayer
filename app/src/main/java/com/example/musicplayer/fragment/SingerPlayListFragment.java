@@ -72,7 +72,7 @@ public class SingerPlayListFragment extends Fragment {
 
     public void updateUI() {
         if (mAlbumAdapter == null) {
-            mAlbumAdapter = new SingerPlayListAdapter(getActivity(), mSongList);
+            mAlbumAdapter = new SingerPlayListAdapter(getContext(), mSongList);
             mRecyclerView.setAdapter(mAlbumAdapter);
         } else {
             mAlbumAdapter.setSongs(mSongList);

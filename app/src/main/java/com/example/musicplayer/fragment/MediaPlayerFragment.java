@@ -1,26 +1,19 @@
 package com.example.musicplayer.fragment;
 
-import android.app.Activity;
 import android.content.ContentUris;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
+
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.os.Parcelable;
+
 import android.provider.MediaStore;
-import android.util.Log;
+
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -32,12 +25,14 @@ import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MediaPlayerActivity;
 import com.example.musicplayer.adpter.MusicAdapter;
 import com.example.musicplayer.model.Song;
+import com.example.musicplayer.repository.MusicCursorWrapper;
 import com.example.musicplayer.repository.SongRepository;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import java.io.IOException;
-import java.io.Serializable;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -52,8 +47,8 @@ public class MediaPlayerFragment extends Fragment {
     public static final String ARGS_MEDIA_PLAYER_SONG_ID = "ARGS_MEDIA_PLAYER_SONG_ID";
 
 
-    private ImageView mPlay, mNext, mPrev, mForward, mBackward, mShuffle, mRepeat, mLike;
-    private TextView mSongTitle;
+    private ImageView mPlay, mNext, mPrev, mForward, mBackward, mShuffle, mRepeat, mLike, mCover;
+    private TextView mSongTitle, mPlayDuration, mTotalDuration;
     private SeekBar mSeekBar;
 
     private MediaPlayer mMediaPlayer;
@@ -130,6 +125,9 @@ public class MediaPlayerFragment extends Fragment {
                 mLike.setColorFilter(Color.BLACK);
             }
         }
+        if (mMediaPlayer != null)
+            mTotalDuration.setText(changeTime(mMediaPlayer.getDuration() / 1000));
+
     }
 
     private void findViews(View view) {
@@ -142,6 +140,9 @@ public class MediaPlayerFragment extends Fragment {
         mRepeat = view.findViewById(R.id.btn_repeat);
         mLike = view.findViewById(R.id.btn_like);
         mSongTitle = view.findViewById(R.id.song_title);
+        mPlayDuration = view.findViewById(R.id.duration_play);
+        mTotalDuration = view.findViewById(R.id.duration_total);
+        mCover = view.findViewById(R.id.bitmap_album_cover);
         mSeekBar = view.findViewById(R.id.seekBar);
 
     }
@@ -274,6 +275,7 @@ public class MediaPlayerFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (seekBar != null && fromUser) {
                     mMediaPlayer.seekTo(progress);
+                    mPlayDuration.setText(changeTime(progress / 1000));
                 }
             }
 
@@ -301,9 +303,15 @@ public class MediaPlayerFragment extends Fragment {
     }
 
     public void setupSongView(long id) {
-        if (!mSongList.get(findCurrentSongPosition(id)).getTitle().equals(null))
+        if (!mSongList.get(findCurrentSongPosition(id)).getTitle().equals(null)) {
+
             mSongTitle.setText(mSongList.get(
                     findCurrentSongPosition(id)).getTitle() + "");
+
+            long albumId = mSongList.get(findCurrentSongPosition(id)).getAlbumId();
+
+       }
+
 
         initViews();
 
@@ -325,12 +333,25 @@ public class MediaPlayerFragment extends Fragment {
         }
     };
 
+    private String changeTime(int currentPosition) {
+        String outOne = "";
+        String outTwo = "";
+        String seconds = String.valueOf(currentPosition % 60);
+        String minutes = String.valueOf(currentPosition / 60);
+        outOne = minutes + ":" + seconds;
+        outTwo = minutes + ":0" + seconds;
+        if (seconds.length() == 1) {
+            return outTwo;
+        } else {
+            return outOne;
+        }
+    }
+
     @Override
     public void onPause() {
         super.onPause();
         mHandler.removeCallbacks(mRunnable);
     }
-
 
 
     @Override

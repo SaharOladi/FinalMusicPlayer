@@ -52,7 +52,6 @@ public class MusicCursorWrapper extends CursorWrapper {
         song.setAlbumName(Album);
         song.setArtistName(Artist);
         song.setDuration(Duration);
-
         return song;
     }
 
@@ -69,4 +68,8 @@ public class MusicCursorWrapper extends CursorWrapper {
 
         return singer;
     }
+
+
+
+
 }

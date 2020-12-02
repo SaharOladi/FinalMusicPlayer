@@ -1,11 +1,11 @@
 package com.example.musicplayer.adpter;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -14,13 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MediaPlayerActivity;
 import com.example.musicplayer.model.Song;
-import com.example.musicplayer.repository.SongRepository;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +64,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     @Override
     public void onBindViewHolder(@NonNull MusicHolder holder, int position) {
         Song song = mSongs.get(position);
-        holder.bindSong(song);
+
+        holder.bindSong(holder, song);
+    }
+
+
+    public static Uri getImage(long albumId) {
+        return ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     public class MusicHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle, mSinger;
-        private ImageView mPlayBtn;
+        private ImageView mPlayBtn, mCover;
         private Song mSong;
 
         public MusicHolder(@NonNull View itemView) {
@@ -101,14 +109,25 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
             mTitle = itemView.findViewById(R.id.row_item_playlist_title);
             mSinger = itemView.findViewById(R.id.row_item_playlist_singer);
             mPlayBtn = itemView.findViewById(R.id.row_item_playlist_btn_play);
+            mCover = itemView.findViewById(R.id.row_item_playlist_cover_art);
         }
 
-        private void bindSong(Song song) {
+        private void bindSong(MusicHolder holder, Song song) {
             mSong = song;
             if (!song.getTitle().equals(null))
                 mTitle.setText(song.getTitle());
             if (!song.getArtistName().equals(null))
                 mSinger.setText(song.getArtistName());
+
+            ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(mContext));
+
+
+            ImageLoader.getInstance().displayImage(getImage(song.getAlbumId()).toString(), holder.mCover,
+                    new DisplayImageOptions.Builder().cacheInMemory(true).showImageOnLoading(R.drawable.image_music)
+                            .resetViewBeforeLoading(true).build());
+
+
+
         }
 
     }

@@ -16,6 +16,8 @@ import com.example.musicplayer.R;
 import com.example.musicplayer.activity.AlbumPlayListActivity;
 import com.example.musicplayer.model.Album;
 import com.example.musicplayer.model.Song;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Collection;

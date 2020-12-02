@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -76,7 +77,8 @@ public class SingerFragment extends Fragment {
     }
 
     private void initViews() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2,
+                GridLayoutManager.VERTICAL, false));
         updateUI();
     }
 
@@ -84,7 +86,7 @@ public class SingerFragment extends Fragment {
         List<Singer> singers = mRepository.getSingers();
 
         if (mSingerAdapter == null) {
-            mSingerAdapter = new SingerAdapter(getActivity(), singers);
+            mSingerAdapter = new SingerAdapter(getContext(), singers);
             mRecyclerView.setAdapter(mSingerAdapter);
         } else {
             mSingerAdapter.setSingers(singers);
@@ -119,7 +121,6 @@ public class SingerFragment extends Fragment {
         mRepository.getSingers().clear();
         mSingerAdapter.notifyDataSetChanged();
     }
-
 
 
 }

@@ -76,7 +76,7 @@ public class AlbumPlayListFragment extends Fragment {
 
     public void updateUI() {
         if (mAlbumAdapter == null) {
-            mAlbumAdapter = new AlbumPlayListAdapter(getActivity(), mSongList);
+            mAlbumAdapter = new AlbumPlayListAdapter(getContext(), mSongList);
             mRecyclerView.setAdapter(mAlbumAdapter);
         } else {
             mAlbumAdapter.setSongs(mSongList);

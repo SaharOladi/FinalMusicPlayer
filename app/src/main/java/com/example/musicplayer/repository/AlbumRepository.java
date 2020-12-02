@@ -1,6 +1,8 @@
 package com.example.musicplayer.repository;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -70,7 +72,6 @@ public class AlbumRepository {
         Collections.sort(mSongs);
         return mSongs;
     }
-
 
 
 

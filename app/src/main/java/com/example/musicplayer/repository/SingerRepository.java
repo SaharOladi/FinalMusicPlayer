@@ -48,7 +48,7 @@ public class SingerRepository {
         return mSingers;
     }
 
-    public static List<Song> getSongs(Context context, long artist_id){
+    public static List<Song> getSongs(Context context, long artist_id) {
 
         List<Song> artistSongList = new ArrayList<>();
 
@@ -61,25 +61,30 @@ public class SingerRepository {
                 MediaStore.Audio.Media.ARTIST,//4
                 MediaStore.Audio.Media.DURATION,//5
                 MediaStore.Audio.Media.TRACK//6
-
         };
 
         String sortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
-        String selection = "is_music=1 and title !='' and artist_id="+artist_id;
-        Cursor cursor = context.getContentResolver().query(uri,projection,selection,null,sortOrder);
+        String selection = "is_music=1 and title !='' and artist_id=" + artist_id;
+        Cursor cursor = context.getContentResolver().query(uri, projection, selection, null, sortOrder);
 
-        if (cursor!=null&&cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             do {
 
                 int trackNumber = cursor.getInt(6);
-                while (trackNumber>=1000){
-                    trackNumber-=1000;
+                while (trackNumber >= 1000) {
+                    trackNumber -= 1000;
                 }
-                artistSongList.add(new Song(cursor.getLong(0),cursor.getString(1),cursor.getLong(2),cursor.getString(3),
-                        artist_id,cursor.getString(4),cursor.getInt(5),trackNumber));
-            }while (cursor.moveToNext());
+                artistSongList.add(new Song(cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getLong(2),
+                        cursor.getString(3),
+                        artist_id,
+                        cursor.getString(4),
+                        cursor.getInt(5),
+                        trackNumber));
+            } while (cursor.moveToNext());
 
-            if (cursor!=null) {
+            if (cursor != null) {
                 cursor.close();
             }
 

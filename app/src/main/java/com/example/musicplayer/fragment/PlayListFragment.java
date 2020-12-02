@@ -78,7 +78,7 @@ public class PlayListFragment extends Fragment {
     public void updateUI() {
         List<Song> songs = mRepository.getSongs();
         if (mMusicAdapter == null) {
-            mMusicAdapter = new MusicAdapter(getActivity(), songs);
+            mMusicAdapter = new MusicAdapter(getContext(), songs);
             mRecyclerView.setAdapter(mMusicAdapter);
         } else {
             mMusicAdapter.setSongs(songs);

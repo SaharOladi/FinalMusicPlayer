@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,14 +74,15 @@ public class AlbumFragment extends Fragment {
     }
 
     private void initViews() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2,
+                GridLayoutManager.VERTICAL, false));
         updateUI();
     }
 
     public void updateUI() {
         List<Album> albums = mRepository.getAlbums();
         if (mAlbumAdapter == null) {
-            mAlbumAdapter = new AlbumAdapter(getActivity(), albums);
+            mAlbumAdapter = new AlbumAdapter(getContext(), albums);
             mRecyclerView.setAdapter(mAlbumAdapter);
         } else {
             mAlbumAdapter.setAlbums(albums);

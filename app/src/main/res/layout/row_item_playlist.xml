@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
+    android:layout_height="125dp"
     android:background="#FFFFFF"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/item_card_view"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="125dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true">
@@ -27,6 +27,7 @@
                 android:id="@+id/row_item_playlist_cover_art"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:padding="1dp"
@@ -70,8 +71,8 @@
                 android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                app:tint="@color/white"
-                android:src="@drawable/ic_action_play" />
+                android:src="@drawable/ic_action_play"
+                app:tint="@color/white" />
 
         </LinearLayout>
 
