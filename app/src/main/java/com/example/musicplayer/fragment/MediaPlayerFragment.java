@@ -39,11 +39,8 @@ import java.util.Random;
 
 public class MediaPlayerFragment extends Fragment {
 
+    //seperate media player in single tone and in main activity release the media player.
 
-    //TODO: edit like songs,
-    // add user permission,
-    // edit play button when user press out of media player fragment,
-    // edit the play song in singer folder or album folder.
     public static final String ARGS_MEDIA_PLAYER_SONG_ID = "ARGS_MEDIA_PLAYER_SONG_ID";
 
 
@@ -171,7 +168,7 @@ public class MediaPlayerFragment extends Fragment {
                     mMediaPlayer.start();
 
                 }
-                mHandler.postDelayed(mRunnable, 0);
+                mHandler.postDelayed(mRunnable, 500);
             }
         });
 
@@ -259,6 +256,7 @@ public class MediaPlayerFragment extends Fragment {
                 mPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
             }
         });
+        //TODO: just change the order of list
 
         mShuffle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,7 +327,8 @@ public class MediaPlayerFragment extends Fragment {
         @Override
         public void run() {
             mSeekBar.setProgress(mMediaPlayer.getCurrentPosition());
-            mHandler.postDelayed(this, 0);
+            mPlayDuration.setText(changeTime(mMediaPlayer.getCurrentPosition() / 1000));
+            mHandler.postDelayed(this, 500);
         }
     };
 

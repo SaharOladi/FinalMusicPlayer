@@ -68,7 +68,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         holder.bindSong(holder, song);
     }
 
-
+    // TODO: implementation 'org.jaudiotagger:jaudiotagger:2.0.1'
     public static Uri getImage(long albumId) {
         return ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
     }
